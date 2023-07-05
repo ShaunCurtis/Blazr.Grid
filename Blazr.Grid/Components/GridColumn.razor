@@ -1,0 +1,47 @@
+﻿@inherits BlazrBaseComponent
+@implements IGridItem<TGridItem>
+@implements IComponent
+@typeparam TGridItem where TGridItem : class
+
+@*No Content is Rendered*@
+
+
+
+@code {
+    // Code section containing the Render Fragments
+
+    public virtual RenderFragment ItemHeaderContent => (__builder) =>
+    {
+        <th class="@this.Class">@this.Title</th>
+    };
+
+    public virtual RenderFragment<TGridItem> ItemRowContent => (item) => (__builder) =>
+    {
+        <td class="@this.Class" @key="@item">
+            @if (ChildContent is not null)
+            {
+                @ChildContent(item)
+            }
+        </td>
+    };
+}
+
+@code {
+    // C# Code section
+
+    [Parameter] public RenderFragment<TGridItem>? ChildContent { get; set; }
+    [Parameter, EditorRequired] public string Title { get; set; } = "Field";
+    [Parameter] public string? Class { get; set; }
+
+    [CascadingParameter] private Action<IGridItem<TGridItem>>? Register { get; set; }
+
+    public virtual Task SetParametersAsync(ParameterView parameters)
+    {
+        parameters.SetParameterProperties(this);
+
+        if (Register != null)
+            Register(this);
+
+        return Task.CompletedTask;
+    }
+}

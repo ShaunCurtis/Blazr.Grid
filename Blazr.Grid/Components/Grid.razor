@@ -1,0 +1,66 @@
+﻿@inherits BlazrBaseComponent
+
+@typeparam TGridItem where TGridItem : class
+@implements IComponent
+@implements IHandleEvent
+
+<CascadingValue Value="this.RegisterColumn">
+    @ChildContent
+</CascadingValue>
+
+@this.GridRenderFragment
+
+@code {
+    /// <summary>
+    /// Render fragment to build out the grid
+    /// </summary>
+    protected virtual RenderFragment GridRenderFragment => (__builder) =>
+    {
+        if (this.Initialized)
+        {
+            int rowIndex = 0;
+
+            <table class="table">
+                <thead class="">
+                    @{
+                        this.BuildHeaderRow(__builder);
+                    }
+                </thead>
+                <tbody>
+                    @foreach (var item in this.Items)
+                    {
+                        this.BuildRow(__builder, rowIndex, item);
+                        rowIndex++;
+                    }
+                </tbody>
+            </table>
+        }
+    };
+
+    /// <summary>
+    /// Render Builder to render the header row
+    /// </summary>
+    protected void BuildHeaderRow(RenderTreeBuilder __builder)
+    {
+        <tr>
+            @foreach (var col in GridColumns)
+            {
+                @col.ItemHeaderContent;
+            }
+        </tr>
+    }
+
+    /// <summary>
+    /// Render fragment to render a row in the table
+    /// </summary>
+    protected void BuildRow(RenderTreeBuilder __builder, int rowIndex, TGridItem item)
+    {
+        <tr aria-rowindex="@rowIndex" class="">
+            @foreach (var col in GridColumns)
+            {
+                @col.ItemRowContent(item)
+                ;
+            }
+        </tr>
+    }
+}

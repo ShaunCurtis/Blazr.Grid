@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazr.Grid", "Blazr.Grid\Blazr.Grid.csproj", "{9873D615-A93C-4DE2-87FF-B9DDB8B597D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazr.Components", "Blazr.Components\Blazr.Components.csproj", "{77AD9000-BD49-4789-B22A-5E32A2DAB830}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D7FD155E-EC53-4863-A703-5225BDBAD554}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9873D615-A93C-4DE2-87FF-B9DDB8B597D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9873D615-A93C-4DE2-87FF-B9DDB8B597D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9873D615-A93C-4DE2-87FF-B9DDB8B597D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9873D615-A93C-4DE2-87FF-B9DDB8B597D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77AD9000-BD49-4789-B22A-5E32A2DAB830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77AD9000-BD49-4789-B22A-5E32A2DAB830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77AD9000-BD49-4789-B22A-5E32A2DAB830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77AD9000-BD49-4789-B22A-5E32A2DAB830}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F9AE781-A482-4F0E-B434-5E6AD7F10AE7}
+	EndGlobalSection
+EndGlobal
