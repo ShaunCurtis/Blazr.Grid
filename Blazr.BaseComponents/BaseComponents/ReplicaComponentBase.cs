@@ -14,7 +14,7 @@
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components;
 
-namespace Blazr.Components;
+namespace Blazr.BaseComponents;
 
 public class ReplicaComponentBase : IComponent, IHandleEvent, IHandleAfterRender
 {

@@ -6,9 +6,9 @@ public partial class Grid<TGridItem> : BlazrBaseComponent, IComponent, IHandleEv
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter] public IEnumerable<TGridItem> Items { get; set; } = Enumerable.Empty<TGridItem>();
 
-    protected readonly List<IGridItem<TGridItem>> GridColumns = new();
+    protected readonly List<IGridColumn<TGridItem>> GridColumns = new();
 
-    public void RegisterColumn(IGridItem<TGridItem> column)
+    public void RegisterColumn(IGridColumn<TGridItem> column)
     {
         if (!GridColumns.Any(item => item.ComponentUid == column.ComponentUid))
             GridColumns.Add(column);

@@ -15,12 +15,11 @@ Welcome to your new app.
     <GridColumn TGridItem="City" Title="City">
         @context.Name
     </GridColumn>
+    <GridColumn TGridItem="City" Title="Actions" Class="text-end">
+        <button class="btn btn-primary" @onclick="() => this.Edit(context.Name)" >Edit</button>
+    </GridColumn>
 </Grid>
 
-<div>
-    <button class="btn btn-primary" @onclick=Clicked>Trigger a Render</button>
-</div>
-
 @code {
-    private void Clicked() {}
+    private void Edit(string name) {}
 }

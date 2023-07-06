@@ -1,11 +1,9 @@
 ﻿@inherits BlazrBaseComponent
-@implements IGridItem<TGridItem>
+@implements IGridColumn<TGridItem>
 @implements IComponent
 @typeparam TGridItem where TGridItem : class
 
 @*No Content is Rendered*@
-
-
 
 @code {
     // Code section containing the Render Fragments
@@ -33,7 +31,7 @@
     [Parameter, EditorRequired] public string Title { get; set; } = "Field";
     [Parameter] public string? Class { get; set; }
 
-    [CascadingParameter] private Action<IGridItem<TGridItem>>? Register { get; set; }
+    [CascadingParameter] private Action<IGridColumn<TGridItem>>? Register { get; set; }
 
     public virtual Task SetParametersAsync(ParameterView parameters)
     {

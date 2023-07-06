@@ -14,7 +14,7 @@
 
 using Microsoft.AspNetCore.Components;
 
-namespace Blazr.Components;
+namespace Blazr.BaseComponents;
 
 public class BlazrUIBase : BlazrBaseComponent, IComponent
 {

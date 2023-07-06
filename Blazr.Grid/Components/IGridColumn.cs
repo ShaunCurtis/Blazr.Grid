@@ -5,7 +5,7 @@
 /// ============================================================
 namespace Blazr.Grid.Components;
 
-public interface IGridItem<TGridItem>
+public interface IGridColumn<TGridItem>
     where TGridItem : class
 {
     public Guid ComponentUid { get; }
