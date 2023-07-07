@@ -2,52 +2,37 @@
 
 The *Registrstion Pattern* is a recent inovation in Blazor for coding components such as tables and data grids.
 
-In this article I'll demonstrate how to code a table, such as that used in `FetchData` using the pattern.
+In this article I'll demonstrate how to code `FetchData` using the pattern.
 
 The solution uses my *Blazor Base Component Library* which is included in the Repo.
 
-The basic concept is we define a grid like this:
+The result is we code the table like this:
 
 ```csharp
-<TableGrid TGridItem="City" Items="CityDataProvider.Cities">
-    <GridColumn TGridItem="City" Title="Country">
-        @context.Country
+<TableGrid TGridItem="WeatherForecast" Items="_weatherForecasts">
+    <GridColumn TGridItem="WeatherForecast" Title="Date">
+        @context.Date
     </GridColumn>
-    <GridColumn TGridItem="City" Title="City">
-        @context.Name
+    <GridColumn TGridItem="WeatherForecast" Title="Temp &deg;C">
+        @context.TemperatureC
     </GridColumn>
-    <GridColumn TGridItem="City" Title="Actions" Class="text-end">
-        <button class="btn btn-primary" @onclick="() => this.Edit(context.Name)" >Edit</button>
+    <GridColumn TGridItem="WeatherForecast" Title="Temp &deg;F">
+        @context.TemperatureF
+    </GridColumn>
+    <GridColumn TGridItem="WeatherForecast" Title="Summary">
+        @context.Summary
+    </GridColumn>
+    <GridColumn TGridItem="WeatherForecast" Title="Actions" Class="text-end">
+        <button class="btn btn-primary" @onclick="() => this.Edit(context.Uid)" >Edit</button>
     </GridColumn>
 </TableGrid>
 ```
+Each `GridColumn`:
 
-Where `City` is:
+1. Registers itself with `Grid`.
+2. Contains the code to render both the header and the row cell for the specific column.
 
-```csharp
-public record City(string Country, string Name);
-```
-
-And the data provider is:
-
-```csharp
-public static class CityDataProvider
-{
-    public static IEnumerable<City> Cities => _cities.AsEnumerable();
-
-    private static List<City> _cities = new List<City>
-        {
-            new( Country: "UK", Name: "London"),
-            new( Country: "UK", Name: "Birmingham"),
-            new( Country: "Spain", Name: "Madrid"),
-        };
-}
-```
-
-
-Each `GridColumn` registers itself with `Grid` and contains the code to render both the header and the data cells for the specific column.
-
-`IGridColumn` defines the interface used by the Grid component to comminicate with each column component.
+`IGridColumn` defines the interface used by the Grid component to store and use columns.
 
 ```csharp
 public interface IGridColumn<TGridItem>
@@ -162,7 +147,7 @@ It implements a single render UI event handler.
 
 And defines a `RegisterColumn` method that is cascaded for columns to register through.
 
-```
+```csharp
     public void RegisterColumn(IGridColumn<TGridItem> column)
     {
         if (!GridColumns.Any(item => item.ComponentUid == column.ComponentUid))
@@ -204,7 +189,7 @@ Two methods build the header and row content.  They iterate through the `GridCol
     }
 ```
 
-Finally the grid builder RenderFragment.  Nothing is rendered on the first render [Initialized is `false`].  It builds out the table, the headers and iterates the `Items` collection to build each row.  It passes the item into `BuildRow` which makes the item available as the `context` object in each cell.
+Finally the grid builder RenderFragment.  Nothing is rendered on the first render [`Initialized` is `false`].  It builds out the table, the headers and iterates the `Items` collection to build each row.  It passes the item into `BuildRow` which makes the item available as the `context` object in each cell.
 
 ```csharp
    protected virtual RenderFragment GridRenderFragment => (__builder) =>
@@ -235,25 +220,66 @@ Finally the grid builder RenderFragment.  Nothing is rendered on the first rende
 
 ```csharp
 @page "/"
+@inject WeatherForecastService Service
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-<TableGrid TGridItem="City" Items="CityDataProvider.Cities">
-    <GridColumn TGridItem="City" Title="Country">
-        @context.Country
+<TableGrid TGridItem="WeatherForecast" Items="_weatherForecasts">
+    <GridColumn TGridItem="WeatherForecast" Title="Date">
+        @context.Date
     </GridColumn>
-    <GridColumn TGridItem="City" Title="City">
-        @context.Name
+    <GridColumn TGridItem="WeatherForecast" Title="Temp &deg;C">
+        @context.TemperatureC
     </GridColumn>
-    <GridColumn TGridItem="City" Title="Actions" Class="text-end">
-        <button class="btn btn-primary" @onclick="() => this.Edit(context.Name)" >Edit</button>
+    <GridColumn TGridItem="WeatherForecast" Title="Temp &deg;F">
+        @context.TemperatureF
+    </GridColumn>
+    <GridColumn TGridItem="WeatherForecast" Title="Summary">
+        @context.Summary
+    </GridColumn>
+    <GridColumn TGridItem="WeatherForecast" Title="Actions" Class="text-end">
+        <button class="btn btn-primary" @onclick="() => this.Edit(context.Uid)" >Edit</button>
     </GridColumn>
 </TableGrid>
 
 @code {
-    private void Edit(string name) {}
+    private IEnumerable<WeatherForecast> _weatherForecasts = Enumerable.Empty<WeatherForecast>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _weatherForecasts = await Service.GetForecastsAsync();
+    }
+
+    private void Edit(Guid uid) {}
 }
 ```
 
+```csharp
+public class WeatherForecastService
+{
+    private static readonly string[] Summaries = new[]
+    { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+
+    private List<WeatherForecast>? _forecasts;
+
+    public async Task<IEnumerable<WeatherForecast>> GetForecastsAsync()
+    {
+        if (_forecasts is null)
+            _forecasts = GetForecasts();
+        await Task.Delay(100);
+        return _forecasts;
+    }
+
+    private List<WeatherForecast> GetForecasts()
+    {
+        return Enumerable.Range(1, 10).Select(index => new WeatherForecast
+        {
+            Date = DateOnly.FromDateTime(DateTime.Now).AddDays(index),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+        }).ToList();
+    }
+}
+```
