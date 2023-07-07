@@ -1,8 +1,8 @@
 # The Blazor Component Registration Pattern
 
-The *Component Registrstion Pattern* is a recently developed pattern for addressing composite components such as tables and data grids.
+The *Registrstion Pattern* is a recent inovation in Blazor for coding components such as tables and data grids.
 
-In this article I'll demonstrate how to code this pattern in a simple setting as I can devise.
+In this article I'll demonstrate how to code a table, such as that used in `FetchData` using the pattern.
 
 The solution uses my *Blazor Base Component Library* which is included in the Repo.
 

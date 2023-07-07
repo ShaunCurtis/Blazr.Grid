@@ -3,6 +3,7 @@
 @typeparam TGridItem where TGridItem : class
 @implements IComponent
 @implements IHandleEvent
+@attribute [CascadingTypeParameter(nameof(TGridItem))]
 
 <CascadingValue Value="this.RegisterColumn">
     @ChildContent

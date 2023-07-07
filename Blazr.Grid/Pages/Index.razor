@@ -1,21 +1,35 @@
 ﻿@page "/"
+@inject WeatherForecastService Service
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
 
-<TableGrid TGridItem="City" Items="CityDataProvider.Cities">
-    <GridColumn TGridItem="City" Title="Country">
-        @context.Country
+<TableGrid TGridItem="WeatherForecast" Items="_weatherForecasts">
+    <GridColumn TGridItem="WeatherForecast" Title="Date">
+        @context.Date
     </GridColumn>
-    <GridColumn TGridItem="City" Title="City">
-        @context.Name
+    <GridColumn TGridItem="WeatherForecast" Title="Temp &deg;C">
+        @context.TemperatureC
     </GridColumn>
-    <GridColumn TGridItem="City" Title="Actions" Class="text-end">
-        <button class="btn btn-primary" @onclick="() => this.Edit(context.Name)" >Edit</button>
+    <GridColumn TGridItem="WeatherForecast" Title="Temp &deg;F">
+        @context.TemperatureF
+    </GridColumn>
+    <GridColumn TGridItem="WeatherForecast" Title="Summary">
+        @context.Summary
+    </GridColumn>
+    <GridColumn TGridItem="WeatherForecast" Title="Actions" Class="text-end">
+        <button class="btn btn-primary" @onclick="() => this.Edit(context.Uid)" >Edit</button>
     </GridColumn>
 </TableGrid>
 
 @code {
-    private void Edit(string name) {}
+    private IEnumerable<WeatherForecast> _weatherForecasts = Enumerable.Empty<WeatherForecast>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _weatherForecasts = await Service.GetForecastsAsync();
+    }
+
+    private void Edit(Guid uid) {}
 }

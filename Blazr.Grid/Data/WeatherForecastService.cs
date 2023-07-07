@@ -6,15 +6,25 @@ namespace Blazr.Grid.Data
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
+        private List<WeatherForecast>? _forecasts;
 
-        public Task<WeatherForecast[]> GetForecastAsync(DateOnly startDate)
+        public async Task<IEnumerable<WeatherForecast>> GetForecastsAsync()
         {
-            return Task.FromResult(Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            if (_forecasts is null)
+                _forecasts = GetForecasts();
+            await Task.Delay(100);
+            return _forecasts;
+        }
+
+
+        private List<WeatherForecast> GetForecasts()
+        {
+            return Enumerable.Range(1, 20).Select(index => new WeatherForecast
             {
-                Date = startDate.AddDays(index),
+                Date = DateOnly.FromDateTime(DateTime.Now).AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            }).ToArray());
+            }).ToList();
         }
     }
 }
